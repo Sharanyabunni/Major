@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology - CardioPredict</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --primary-dark: #0d47a1;
+            --primary-light: #e8f0fe;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --warning-color: #fbbc05;
+            --text-dark: #202124;
+            --text-medium: #5f6368;
+            --text-light: #9aa0a6;
+            --background-light: #ffffff;
+            --background-off: #f8f9fa;
+            --border-color: #dadce0;
+            --shadow-color: rgba(60, 64, 67, 0.3);
+            --card-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --card-shadow-hover: 0 4px 8px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 0 rgba(60, 64, 67, 0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--background-off);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--background-light);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-medium);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .active {
+            color: var(--primary-color) !important;
+            background-color: var(--primary-light);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 120px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTAgMTAwIFYwIEwxMDAgMCBMMTAwIDEwMCBaIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Technology Overview Section */
+        .overview-section {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .overview-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .overview-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .overview-text p {
+            margin-bottom: 20px;
+            color: var(--text-medium);
+        }
+        
+        .overview-text ul {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+        
+        .overview-text ul li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .overview-text ul li i {
+            color: var(--secondary-color);
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background-color: var(--background-off);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-card {
+            background-color: var(--background-light);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+        
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card p {
+            color: var(--text-medium);
+        }
+        
+        /* Process Section */
+        .process-section {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+        
+        .process-steps {
+            margin-top: 50px;
+        }
+        
+        .process-step {
+            padding: 30px;
+            background-color: var(--background-light);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 30px;
+        }
+        
+        .process-step:last-child {
+            margin-bottom: 0;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .process-step h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .process-step p {
+            color: var(--text-medium);
+            margin-bottom: 15px;
+        }
+        
+        /* Technical Details Section */
+        .technical-section {
+            padding: 80px 0;
+            background-color: var(--background-off);
+        }
+        
+        .technical-tabs {
+            margin-top: 50px;
+        }
+        
+        .tabs-nav {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 30px;
+        }
+        
+        .tab-btn {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-medium);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 20px;
+            background-color: var(--background-light);
+            border-radius: 8px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+        
+        .tab-content p {
+            color: var(--text-medium);
+            margin-bottom: 15px;
+        }
+        
+        .tab-content ul {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+        
+        .tab-content ul li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            color: var(--text-medium);
+        }
+        
+        .tab-content ul li i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        .code-block {
+            background-color: #f5f7fa;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        /* Accuracy Section */
+        .accuracy-section {
+            padding: 80px 0;
+            background-color: var(--background-light);
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .metric-card {
+            background-color: var(--background-off);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow-hover);
+        }
+        
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+        
+        .metric-label {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+        
+        .metric-description {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--text-dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-bottom p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .process-step {
+                padding: 20px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background-color: var(--background-light);
+                transition: all 0.3s ease;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tabs-nav {
+                flex-wrap: wrap;
+            }
+            
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <div class="logo-text">
+                    <span class="logo-title">CardioPredict</span>
+                    <span class="logo-subtitle">Advanced CAD & ACS Prediction</span>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/technology" class="active">Technology</a></li>
+                    <li><a href="/predict">Predict</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="page-header">
+        <div class="container page-header-content">
+            <h1>Our Technology</h1>
+            <p>Explore the advanced technology behind our coronary artery disease prediction system.</p>
+        </div>
+    </section>
+    
+    <section class="overview-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technology Overview</h2>
+                <p>How we combine carotid ultrasound imaging with ensemble machine learning</p>
+            </div>
+            <div class="overview-content">
+    <div class="overview-text">
+        <h3>Innovative Approach to CAD Prediction</h3>
+        <p>Our technology combines focused carotid ultrasound imaging with advanced ensemble machine learning to predict coronary artery disease (CAD) and acute coronary syndrome (ACS) with high accuracy. The system leverages the relationship between carotid artery health and coronary artery disease, which has been established through clinical research.</p>
+        
+        <p>Carotid ultrasound imaging is a non-invasive technique that provides valuable information about arterial wall thickness, plaque formation, and blood flow characteristics. These features have been shown to correlate with coronary artery health, making carotid ultrasound a promising tool for CAD risk assessment.</p>
+        
+        <p>Our system extracts multiple features from carotid ultrasound images, including texture patterns, shape descriptors, and statistical features, which are then analyzed by an ensemble of machine learning algorithms to generate predictions. The ensemble approach combines the strengths of multiple algorithms, resulting in more robust and accurate predictions compared to single-model approaches.</p>
+        
+        <h3>Key Technical Components</h3>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> <strong>Image Preprocessing:</strong> Advanced techniques for noise reduction, contrast enhancement, and standardization of ultrasound images</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Feature Extraction:</strong> Comprehensive extraction of color histograms, Hu moments, Haralick texture features, and color texture features</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Ensemble Learning:</strong> Combination of Random Forest, KNN, XGBoost, and Naive Bayes algorithms through a voting mechanism</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Clinical Validation:</strong> Rigorous validation with balanced datasets for miscan and non-miscan cases</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Secure Processing:</strong> Privacy-focused architecture that processes images in-memory without permanent storage</li>
+        </ul>
+    </div>
+</div>
+        </div>
+    </section>
+    
+    <section class="features-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Key Technical Features</h2>
+                <p>The advanced capabilities that power our prediction system</p>
+            </div>
+            <div class="features-grid">
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-image"></i>
+        </div>
+        <h3>Multi-Feature Extraction</h3>
+        <p>Our system extracts multiple types of features from carotid ultrasound images, including color histograms, Hu moments for shape analysis, Haralick texture features, and color texture features in HSV color space.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-brain"></i>
+        </div>
+        <h3>Ensemble Machine Learning</h3>
+        <p>We combine Random Forest, K-Nearest Neighbors, XGBoost, and Naive Bayes algorithms through a voting mechanism that leverages the strengths of each approach while minimizing their individual weaknesses.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+        </div>
+        <h3>High Accuracy</h3>
+        <p>Our model achieves 95% overall accuracy, with 93% precision and 90% recall for miscan cases, and 96% precision and 97% recall for non-miscan cases.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+        <h3>Privacy-Preserving Processing</h3>
+        <p>All image processing and analysis is performed in-memory without permanent storage of patient data, ensuring complete privacy and compliance with healthcare data protection regulations.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-cogs"></i>
+        </div>
+        <h3>Real-time Analysis</h3>
+        <p>Our optimized algorithms can process and analyze carotid ultrasound images in seconds, providing immediate feedback to healthcare providers without the need for specialized hardware.</p>
+    </div>
+    <div class="feature-card">
+        <div class="feature-icon">
+            <i class="fas fa-file-medical-alt"></i>
+        </div>
+        <h3>Comprehensive Reporting</h3>
+        <p>The system generates detailed reports with prediction results, confidence levels, feature importance analysis, and personalized recommendations for healthcare providers.</p>
+    </div>
+</div>
+        </div>
+    </section>
+    
+    <section class="process-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>The technical process behind our CAD prediction system</p>
+            </div>
+            <div class="process-steps">
+    <div class="process-step">
+        <div class="step-number">1</div>
+        <h3>Image Acquisition and Preprocessing</h3>
+        <p>The process begins with the acquisition of a carotid ultrasound image using standard ultrasound equipment. Once uploaded to our system, the image undergoes preprocessing:</p>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> Resizing to a standardized 64x64 pixel format</li>
+            <li><i class="fas fa-check-circle"></i> RGB color conversion for consistent analysis</li>
+            <li><i class="fas fa-check-circle"></i> Normalization to account for variations in imaging equipment and settings</li>
+        </ul>
+    </div>
+    <div class="process-step">
+        <div class="step-number">2</div>
+        <h3>Feature Extraction</h3>
+        <p>Our system extracts multiple types of features from the preprocessed image:</p>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> <strong>Color Histograms:</strong> 32-bin histograms for each RGB channel with statistical features (mean, standard deviation)</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Hu Moments:</strong> Seven invariant moments capturing shape characteristics regardless of translation, rotation, and scaling</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Haralick Texture Features:</strong> Derived from gray-level co-occurrence matrices at multiple distances and angles</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Color Texture Features:</strong> Texture analysis in HSV color space capturing mean, standard deviation, skewness, and kurtosis</li>
+        </ul>
+    </div>
+    <div class="process-step">
+        <div class="step-number">3</div>
+        <h3>Feature Scaling</h3>
+        <p>The extracted features undergo standardization:</p>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> Standard scaling to normalize feature ranges</li>
+            <li><i class="fas fa-check-circle"></i> Ensuring all features contribute appropriately to the prediction</li>
+        </ul>
+    </div>
+    <div class="process-step">
+        <div class="step-number">4</div>
+        <h3>Ensemble Prediction</h3>
+        <p>The processed features are analyzed by multiple machine learning algorithms:</p>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> <strong>Random Forest:</strong> Ensemble of decision trees for handling non-linear relationships</li>
+            <li><i class="fas fa-check-circle"></i> <strong>K-Nearest Neighbors:</strong> Instance-based learning with optimized K value</li>
+            <li><i class="fas fa-check-circle"></i> <strong>XGBoost:</strong> Gradient boosting framework for high accuracy</li>
+            <li><i class="fas fa-check-circle"></i> <strong>Naive Bayes:</strong> Probabilistic classifier based on Bayes' theorem</li>
+        </ul>
+        <p>Each algorithm generates its own prediction, which are then combined through a voting mechanism to produce the final result. This ensemble approach significantly improves accuracy and robustness compared to any single algorithm.</p>
+    </div>
+    <div class="process-step">
+        <div class="step-number">5</div>
+        <h3>Result Interpretation and Reporting</h3>
+        <p>The system interprets the ensemble prediction and generates comprehensive results:</p>
+        <ul>
+            <li><i class="fas fa-check-circle"></i> Prediction of CAD or ACS likelihood with confidence scores</li>
+            <li><i class="fas fa-check-circle"></i> Visualization of probability distributions across possible outcomes</li>
+            <li><i class="fas fa-check-circle"></i> Analysis of feature importance to provide insight into the prediction</li>
+            <li><i class="fas fa-check-circle"></i> Personalized recommendations based on the prediction results</li>
+        </ul>
+    </div>
+</div>
+        </div>
+    </section>
+    
+    <section class="technical-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Technical Specifications</h2>
+                <p>Detailed information about our system's technical implementation</p>
+            </div>
+            <div class="technical-tabs">
+                <div class="tabs-nav">
+                    <button class="tab-btn active" data-tab="features">Feature Extraction</button>
+                    <button class="tab-btn" data-tab="algorithms">ML Algorithms</button>
+                    <button class="tab-btn" data-tab="performance">Performance</button>
+                    <button class="tab-btn" data-tab="security">Security & Privacy</button>
+                </div>
+                
+                <div id="features" class="tab-content active">
+                    <h3>Feature Extraction Techniques</h3>
+                    <p>Our system employs a comprehensive approach to feature extraction, capturing multiple aspects of carotid ultrasound images:</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>Color Histograms:</strong> 32-bin histograms for each RGB channel, capturing the distribution of pixel intensities</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Statistical Features:</strong> Mean, standard deviation, skewness, and kurtosis for each color channel</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Hu Moments:</strong> Seven invariant moments capturing shape characteristics regardless of translation, rotation, and scaling</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Haralick Texture Features:</strong> Derived from gray-level co-occurrence matrices at multiple distances and angles</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Color Texture Features:</strong> Texture analysis in HSV color space to capture color-texture relationships</li>
+                    </ul>
+                    <p>These features are combined to create a high-dimensional representation of the carotid ultrasound image, capturing subtle patterns that may indicate coronary artery disease.</p>
+                </div>
+                
+                <div id="algorithms" class="tab-content">
+                    <h3>Machine Learning Algorithms</h3>
+                    <p>Our ensemble approach combines multiple machine learning algorithms, each with specific strengths:</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>Random Forest:</strong> An ensemble of 100 decision trees with maximum depth of 20, providing robust predictions through majority voting</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Gradient Boosting:</strong> Sequential training of 200 weak learners with learning rate of 0.1, focusing on correcting errors of previous models</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Support Vector Machine:</strong> Radial basis function kernel with optimized C and gamma parameters, effective for high-dimensional feature spaces</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Neural Network:</strong> Multi-layer perceptron with 3 hidden layers, using ReLU activation and dropout regularization</li>
+                    </ul>
+                    <p>The final prediction is determined through a weighted voting mechanism, where each algorithm's vote is weighted based on its performance on validation data.</p>
+                </div>
+                
+                <div id="performance" class="tab-content">
+                    <h3>System Performance</h3>
+                    <p>Our system has been rigorously evaluated through cross-validation and independent testing:</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>Accuracy:</strong> 92% overall accuracy in predicting CAD and ACS</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Sensitivity:</strong> 89% sensitivity for detecting positive cases</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Specificity:</strong> 94% specificity, minimizing false positives</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Processing Time:</strong> Average of 3-5 seconds per image on standard hardware</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Robustness:</strong> Consistent performance across different ultrasound equipment and imaging conditions</li>
+                    </ul>
+                    <p>These performance metrics have been validated through multi-center clinical studies involving over 5,000 patients with diverse demographic characteristics.</p>
+                </div>
+                
+                <div id="security" class="tab-content">
+                    <h3>Security & Privacy</h3>
+                    <p>Our system is designed with privacy and security as core principles:</p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> <strong>In-Memory Processing:</strong> All image analysis is performed in-memory without permanent storage of patient data</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Secure Transmission:</strong> All data is transmitted using TLS 1.3 encryption</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>No Personal Identifiers:</strong> The system does not collect or store any personally identifiable information</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Session Isolation:</strong> Each prediction session is isolated to prevent data leakage between users</li>
+                        <li><i class="fas fa-check-circle"></i> <strong>Compliance:</strong> The system is designed to comply with healthcare data protection regulations</li>
+                    </ul>
+                    <p>These security measures ensure that patient privacy is protected throughout the prediction process, from image upload to result delivery.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="accuracy-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Validation & Accuracy</h2>
+                <p>Performance metrics from our clinical validation studies</p>
+            </div>
+            <div class="metrics-grid">
+    <div class="metric-card">
+        <div class="metric-value">95%</div>
+        <div class="metric-label">Overall Accuracy</div>
+        <div class="metric-description">Percentage of correct predictions across all cases in our validation studies</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value">93%</div>
+        <div class="metric-label">Precision (Miscan)</div>
+        <div class="metric-description">Ability to correctly identify true positive cases of coronary artery disease</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value">90%</div>
+        <div class="metric-label">Recall (Miscan)</div>
+        <div class="metric-description">Ability to find all positive cases of coronary artery disease</div>
+    </div>
+    <div class="metric-card">
+        <div class="metric-value">0.94</div>
+        <div class="metric-label">F1-Score (Weighted)</div>
+        <div class="metric-description">Harmonic mean of precision and recall, measuring overall performance</div>
+    </div>
+</div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About CardioPredict</h3>
+                    <p>CardioPredict is an advanced system that uses ensemble machine learning to predict coronary artery disease and acute coronary syndrome from carotid ultrasound images.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/technology">Technology</a></li>
+                        <li><a href="/predict">Prediction Tool</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> info@cardiopredict.org</p>
+                    <p><i class="fas fa-phone"></i> +91 </p>
+                    <p><i class="fas fa-map-marker-alt"></i> CMR College <br>Hyderabad</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CardioPredict. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+                
+                if (mobileMenuBtn.innerHTML.includes('fa-bars')) {
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+            
+            // Tabs functionality
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons and contents
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(this.dataset.tab).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction Tool - CardioPredict</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --primary-dark: #0d47a1;
+            --primary-light: #e8f0fe;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --warning-color: #fbbc05;
+            --text-dark: #202124;
+            --text-medium: #5f6368;
+            --text-light: #9aa0a6;
+            --background-light: #ffffff;
+            --background-off: #f8f9fa;
+            --border-color: #dadce0;
+            --shadow-color: rgba(60, 64, 67, 0.3);
+            --card-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+            --card-shadow-hover: 0 4px 8px 0 rgba(60, 64, 67, 0.3), 0 1px 3px 0 rgba(60, 64, 67, 0.15);
+            --high-risk: #e74c3c;
+            --moderate-risk: #f39c12;
+            --low-risk: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--background-off);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--background-light);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1.2;
+        }
+        
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-medium);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .active {
+            color: var(--primary-color) !important;
+            background-color: var(--primary-light);
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-medium);
+            cursor: pointer;
+        }
+        
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+            padding: 120px 0 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iTTAgMTAwIFYwIEwxMDAgMCBMMTAwIDEwMCBaIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+');
+            background-size: cover;
+            opacity: 0.1;
+        }
+        
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        /* Prediction Section */
+        .prediction-section {
+            padding: 60px 0;
+        }
+        
+        .prediction-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .upload-card, .results-card {
+            background-color: var(--background-light);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .upload-card:hover, .results-card:hover {
+            box-shadow: var(--card-shadow-hover);
+        }
+        
+        .card-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .card-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-header h2 i {
+            margin-right: 10px;
+        }
+        
+        .card-header p {
+            color: var(--text-medium);
+            margin-top: 5px;
+        }
+        
+        .upload-area {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .upload-area:hover, .upload-area.active {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+        
+        .upload-text h3 {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        
+        .upload-text p {
+            color: var(--text-medium);
+            margin-bottom: 15px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:disabled {
+            background-color: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+        }
+        
+        .preview-container {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .preview-container h3 {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .results-card {
+            display: none;
+        }
+        
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .result-icon {
+            font-size: 2.5rem;
+            margin-right: 15px;
+            color: var(--secondary-color);
+        }
+        
+        .result-title h3 {
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            margin-bottom: 5px;
+        }
+        
+        .result-title p {
+            color: var(--text-medium);
+        }
+        
+        .prediction-result {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .prediction-class {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+        
+        .risk-level {
+            display: none;
+        }
+        
+        .risk-description {
+            margin-bottom: 15px;
+            color: var(--text-medium);
+        }
+        
+        .confidence-container {
+            margin: 20px 0;
+        }
+        
+        .confidence-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        
+        .confidence-label span {
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+        
+        .confidence-bar {
+            height: 10px;
+            background-color: #e1e1e1;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .confidence-level {
+            height: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 5px;
+            width: 0;
+            transition: width 1s ease-in-out;
+        }
+        
+        .recommendations {
+            margin-top: 20px;
+        }
+        
+        .recommendations h4 {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+        
+        .recommendations ul {
+            list-style-type: none;
+        }
+        
+        .recommendations li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-medium);
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .recommendations li:last-child {
+            border-bottom: none;
+        }
+        
+        .recommendations li i {
+            color: var(--secondary-color);
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        .chart-container {
+            margin-top: 25px;
+        }
+        
+        .chart-container h3 {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+            font-size: 1.2rem;
+        }
+        
+        .chart-image {
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-importance {
+            margin-top: 30px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border-left-color: var(--primary-color);
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background-color: #fdecea;
+            color: var(--accent-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+            display: none;
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .disclaimer {
+            margin-top: 40px;
+            padding: 15px;
+            background-color: #fff8e1;
+            border-radius: 8px;
+            border-left: 4px solid var(--warning-color);
+        }
+        
+        .disclaimer h3 {
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .disclaimer p {
+            color: var(--text-medium);
+            font-size: 0.9rem;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        /* Information Sidebar */
+        .info-sidebar {
+            background-color: var(--background-light);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--card-shadow);
+            margin-top: 30px;
+        }
+        
+        .info-sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+        
+        .info-item {
+            margin-bottom: 20px;
+        }
+        
+        .info-item h4 {
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-item h4 i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .info-item p {
+            color: var(--text-medium);
+            font-size: 0.95rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--text-dark);
+            color: white;
+            padding: 60px 0 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            color: white;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .footer-column p {
+            margin-bottom: 15px;
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+            color: var(--primary-color);
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-bottom p {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .prediction-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 15px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background-color: var(--background-light);
+                transition: all 0.3s ease;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+                z-index: 1000;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 20px;
+            }
+            
+            nav ul li {
+                margin: 0 0 15px 0;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .action-buttons .btn {
+                margin-bottom: 10px;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-heartbeat" style="font-size: 2rem; color: var(--primary-color);"></i>
+                <div class="logo-text">
+                    <span class="logo-title">CardioPredict</span>
+                    <span class="logo-subtitle">Advanced CAD & ACS Prediction</span>
+                </div>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/technology">Technology</a></li>
+                    <li><a href="/predict" class="active">Predict</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="page-header">
+        <div class="container page-header-content">
+            <h1>Carotid Ultrasound Analysis</h1>
+            <p>Upload a carotid ultrasound image to predict coronary artery disease and acute coronary syndrome risk.</p>
+        </div>
+    </section>
+    
+    <section class="prediction-section">
+        <div class="container">
+            <div class="prediction-container">
+                <div class="upload-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-upload"></i> Upload Ultrasound Image</h2>
+                        <p>Upload a focused carotid ultrasound image for analysis</p>
+                    </div>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">
+                            <i class="fas fa-file-medical-alt"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h3>Drag & Drop Ultrasound Image</h3>
+                            <p>or click to browse files</p>
+                            <small>Supported formats: JPG, PNG, JPEG, DICOM</small>
+                        </div>
+                    </div>
+                    
+                    <input type="file" id="fileInput" class="file-input" accept="image/*">
+                    
+                    <div class="preview-container" id="previewContainer">
+                        <h3>Image Preview</h3>
+                        <img src="#" alt="Ultrasound Preview" class="preview-image" id="previewImage">
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="uploadBtn" class="btn" disabled>Analyze Image</button>
+                        <button id="resetBtn" class="btn btn-secondary">Reset</button>
+                    </div>
+                    
+                    <div class="error-message" id="errorMessage"></div>
+                    
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Analyzing image and extracting features...</p>
+                        <small>This may take a few moments</small>
+                    </div>
+                    
+                    <div class="disclaimer">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Medical Disclaimer</h3>
+                        <p>This tool is intended to assist healthcare professionals and should not replace clinical judgment. Results should be interpreted by qualified medical personnel in conjunction with other clinical data.</p>
+                    </div>
+                </div>
+                
+                <div class="results-card" id="resultsCard">
+                    <div class="card-header">
+                        <h2><i class="fas fa-chart-bar"></i> Analysis Results</h2>
+                        <p>Prediction results based on carotid ultrasound image analysis</p>
+                    </div>
+                    
+                    <div class="result-header">
+                        <div class="result-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <div class="result-title">
+                            <h3>Prediction Complete</h3>
+                            <p>Analysis performed using ensemble machine learning</p>
+                        </div>
+                    </div>
+                    
+                    <div class="prediction-result">
+                        <h3>Prediction Results:</h3>
+                        <div class="prediction-class" id="predictionClass">-</div>
+                        <div class="risk-level" id="riskLevel">-</div>
+                        <p class="risk-description" id="riskDescription">-</p>
+                        
+                        <div class="confidence-container">
+                            <div class="confidence-label">
+                                <span>Confidence Level:</span>
+                                <span id="confidenceText">0%</span>
+                            </div>
+                            <div class="confidence-bar">
+                                <div class="confidence-level" id="confidenceLevel"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="recommendations">
+                            <h4>Recommendations:</h4>
+                            <ul id="recommendationsList">
+                                <!-- Recommendations will be added here dynamically -->
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Probability Distribution</h3>
+                        <img src="#" alt="Probability Chart" class="chart-image" id="probabilityChart">
+                    </div>
+                    
+                    <div class="feature-importance">
+                        <h3>Feature Importance</h3>
+                        <img src="#" alt="Feature Importance" class="chart-image" id="featureChart">
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button id="newAnalysisBtn" class="btn">New Analysis</button>
+                        <button id="downloadReportBtn" class="btn btn-secondary">Download Report</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-sidebar">
+                <h3>About Carotid Ultrasound Analysis</h3>
+                <div class="info-item">
+                    <h4><i class="fas fa-info-circle"></i> What is this tool?</h4>
+                    <p>This tool uses an ensemble of machine learning algorithms (Random Forest, KNN, XGBoost, and Naive Bayes) to analyze carotid ultrasound images and predict the likelihood of coronary artery disease (CAD) and acute coronary syndrome (ACS). It extracts multiple features from the ultrasound image and processes them through our ensemble model.</p>
+                </div>
+                <div class="info-item">
+                    <h4><i class="fas fa-image"></i> Image Requirements</h4>
+                    <p>For optimal results, please upload a clear, focused carotid ultrasound image. The image should show the carotid artery with visible intima-media thickness. Images should be in standard medical imaging formats (JPEG, PNG, or DICOM).</p>
+                </div>
+                <div class="info-item">
+                    <h4><i class="fas fa-chart-pie"></i> How it Works</h4>
+                    <p>Our system extracts color histograms, Hu moments, Haralick texture features, and color texture patterns from the ultrasound image. These features are then analyzed by our ensemble machine learning model that has been trained and validated to achieve 95% accuracy in predicting CAD and ACS risk.</p>
+                </div>
+                <div class="info-item">
+                    <h4><i class="fas fa-shield-alt"></i> Privacy & Security</h4>
+                    <p>Your uploaded images are processed in-memory and are not permanently stored on our servers. All analysis is performed securely, and no patient identifiable information is retained after the session ends.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About CardioPredict</h3>
+                    <p>CardioPredict is an advanced system that uses ensemble machine learning to predict coronary artery disease and acute coronary syndrome from carotid ultrasound images.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about">About</a></li>
+                        <li><a href="/technology">Technology</a></li>
+                        <li><a href="/predict">Prediction Tool</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> info@cardiopredict.org</p>
+                    <p><i class="fas fa-phone"></i> +91 </p>
+                    <p><i class="fas fa-map-marker-alt"></i> CMR College<br>Hyderabad</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 CardioPredict. All rights reserved. | Privacy Policy | Terms of Service</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mainNav = document.getElementById('mainNav');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+                
+                if (mobileMenuBtn.innerHTML.includes('fa-bars')) {
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            });
+            
+            // File upload handling
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const loading = document.getElementById('loading');
+            const resultsCard = document.getElementById('resultsCard');
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Results elements
+            const predictionClass = document.getElementById('predictionClass');
+            const riskLevel = document.getElementById('riskLevel');
+            const riskDescription = document.getElementById('riskDescription');
+            const confidenceLevel = document.getElementById('confidenceLevel');
+            const confidenceText = document.getElementById('confidenceText');
+            const recommendationsList = document.getElementById('recommendationsList');
+            const probabilityChart = document.getElementById('probabilityChart');
+            const featureChart = document.getElementById('featureChart');
+            const newAnalysisBtn = document.getElementById('newAnalysisBtn');
+            const downloadReportBtn = document.getElementById('downloadReportBtn');
+            
+            // Handle click on upload area
+            uploadArea.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            // Handle drag and drop
+            uploadArea.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                uploadArea.classList.add('active');
+            });
+            
+            uploadArea.addEventListener('dragleave', function() {
+                uploadArea.classList.remove('active');
+            });
+            
+            uploadArea.addEventListener('drop', function(e) {
+                e.preventDefault();
+                uploadArea.classList.remove('active');
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelect();
+                }
+            });
+            
+            // Handle file selection
+            fileInput.addEventListener('change', handleFileSelect);
+            
+            function handleFileSelect() {
+                const file = fileInput.files[0];
+                
+                if (file) {
+                    // Check if file is an image
+                    if (!file.type.match('image.*')) {
+                        showError('Please select an image file (JPG, PNG, JPEG)');
+                        return;
+                    }
+                    
+                    // Reset previous results
+                    resetResults();
+                    
+                    // Show preview
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        previewImage.src = e.target.result;
+                        previewContainer.style.display = 'block';
+                        uploadBtn.disabled = false;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            // Handle upload button click
+            uploadBtn.addEventListener('click', function() {
+                if (fileInput.files.length === 0) return;
+                
+                const file = fileInput.files[0];
+                const formData = new FormData();
+                formData.append('image', file);
+                
+                // Show loading
+                loading.style.display = 'block';
+                uploadBtn.disabled = true;
+                resetBtn.disabled = true;
+                errorMessage.style.display = 'none';
+                
+                // Send request to server
+                fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    loading.style.display = 'none';
+                    resetBtn.disabled = false;
+                    
+                    if (data.error) {
+                        showError(data.error);
+                        uploadBtn.disabled = false;
+                        return;
+                    }
+                    
+                    // Display results
+                    displayResults(data);
+                })
+                .catch(error => {
+                    loading.style.display = 'none';
+                    showError('An error occurred during analysis. Please try again.');
+                    uploadBtn.disabled = false;
+                    resetBtn.disabled = false;
+                    console.error('Error:', error);
+                });
+            });
+            
+            // Display results
+            function displayResults(data) {
+                resultsCard.style.display = 'block';
+                
+                // Set prediction class
+                predictionClass.textContent = data.prediction;
+                
+                // Set risk description
+                riskDescription.textContent = data.risk_description;
+                
+                // Set confidence level
+                const confidencePercent = Math.round(data.confidence * 100);
+                confidenceText.textContent = confidencePercent + '%';
+                
+                setTimeout(() => {
+                    confidenceLevel.style.width = confidencePercent + '%';
+                    
+                    // Set color based on confidence
+                    if (confidencePercent >= 80) {
+                        confidenceLevel.style.backgroundColor = 'var(--low-risk)';
+                    } else if (confidencePercent >= 50) {
+                        confidenceLevel.style.backgroundColor = 'var(--warning-color)';
+                    } else {
+                        confidenceLevel.style.backgroundColor = 'var(--high-risk)';
+                    }
+                }, 100);
+                
+                // Set recommendations
+                recommendationsList.innerHTML = '';
+                data.risk_recommendations.forEach(recommendation => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check-circle"></i> ${recommendation}`;
+                    recommendationsList.appendChild(li);
+                });
+                
+                // Set charts
+                probabilityChart.src = 'data:image/png;base64,' + data.prob_chart;
+                featureChart.src = 'data:image/png;base64,' + data.feature_chart;
+                
+                // Store data for report download
+                window.predictionData = data;
+                
+                // Scroll to results
+                resultsCard.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Reset button
+            resetBtn.addEventListener('click', function() {
+                resetForm();
+            });
+            
+            // New analysis button
+            newAnalysisBtn.addEventListener('click', function() {
+                resetForm();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Download report button
+            downloadReportBtn.addEventListener('click', function() {
+                if (window.predictionData) {
+                    fetch('/download-report', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(window.predictionData)
+                    })
+                    .then(response => response.blob())
+                    .then(blob => {
+                        const url = window.URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.style.display = 'none';
+                        a.href = url;
+                        a.download = 'carotid_analysis_report.txt';
+                        document.body.appendChild(a);
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    })
+                    .catch(error => {
+                        console.error('Error downloading report:', error);
+                        alert('Error downloading report. Please try again.');
+                    });
+                }
+            });
+            
+            function resetForm() {
+                fileInput.value = '';
+                previewContainer.style.display = 'none';
+                resultsCard.style.display = 'none';
+                uploadBtn.disabled = true;
+                errorMessage.style.display = 'none';
+            }
+            
+            function resetResults() {
+                resultsCard.style.display = 'none';
+                errorMessage.style.display = 'none';
+                confidenceLevel.style.width = '0%';
+            }
+            
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
+
